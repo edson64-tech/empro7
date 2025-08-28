@@ -1,0 +1,41 @@
+# render.yaml — Blueprint para criar o serviço automaticamente no Render
+# Coloca este ficheiro na raiz do teu repositório (git) e faz push.
+# Depois, no Render: Dashboard -> New (+) -> Blueprint -> liga o repositório.
+# O Render vai ler este ficheiro e criar o serviço web para ti.
+
+services:
+  - type: web
+    name: transporte-api
+    env: node
+    plan: starter          # podes trocar para 'free' para testes (sujeito a limitações)
+    region: frankfurt      # escolhe a que preferires
+    branch: main
+    autoDeploy: true
+    buildCommand: npm ci && npm run build
+    startCommand: node dist/main.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false        # preenche manualmente no painel do Render após criar
+      - key: IZIPAY_API_KEY
+        sync: false
+      - key: IZIPAY_SECRET
+        sync: false
+      - key: IZIPAY_WEBHOOK_SECRET
+        sync: false
+      - key: WHATSAPP_TOKEN
+        sync: false
+      - key: WHATSAPP_PHONE_ID
+        sync: false
+      - key: WHATSAPP_VERIFY_TOKEN
+        sync: false
+      - key: PRIMAVERA_BASE_URL
+        sync: false
+      - key: PRIMAVERA_CLIENT_ID
+        sync: false
+      - key: PRIMAVERA_CLIENT_SECRET
+        sync: false
